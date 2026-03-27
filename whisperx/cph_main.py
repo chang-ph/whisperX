@@ -6,14 +6,14 @@ import time
 import librosa
 import numpy as np
 import torch
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from scipy.io import wavfile
 
 import whisperx
 import whisperx.diarize
 
 logger = logging.getLogger(__name__)
-load_dotenv()
+# load_dotenv()
 
 whisper_model = None
 diarize_model = None
