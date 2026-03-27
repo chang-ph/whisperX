@@ -127,7 +127,7 @@ def transcribe_audio(
     if not os.path.exists(wav_path):
         return False
 
-    logger.info(f"Transcribing {wav_path}")
+    logger.info(f"Transcribing {wav_path}, {batch_size=}, {diarization=}")
     if device == "auto":
         device = "cuda" if torch.cuda.is_available() else "cpu"
     load_whisper_model(model_name, download_root, device)
@@ -247,7 +247,7 @@ def cli():
     )
     args = parser.parse_args()
 
-    transcribe_all_audio_under_folder(args.audio_folder, "turbo")
+    transcribe_all_audio_under_folder(args.audio_folder, model_name="turbo", diarization=False, batch_size=16)
 
 
 if __name__ == "__main__":
