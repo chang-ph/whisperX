@@ -5,7 +5,7 @@ name = "whisperx"
 version = "3.8.4"
 description = "Time-Accurate Automatic Speech Recognition using Whisper."
 readme = "README.md"
-requires-python = ">=3.10, <3.14"
+requires-python = ">=3.13, <3.14"
 license = { text = "BSD-2-Clause" }
 
 dependencies = [
@@ -28,7 +28,7 @@ dependencies = [
 dev = ["pytest"]
 
 [project.scripts]
-whisperx = "whisperx.__main__:cli"
+whisperx = "whisperx.cph_main:cli"
 
 [build-system]
 requires = ["setuptools"]
@@ -42,29 +42,22 @@ include = ["whisperx*"]
 
 # torchcodec (transitive dep of pyannote-audio >=4) has no wheels for Linux aarch64
 [tool.uv]
+# NOTE: torchcodec -- torch compatibility table:
+# https://github.com/meta-pytorch/torchcodec#:~:text=The%20following%20table%20indicates%20the%20compatibility%20between%20versions%20of%20torchcodec%2C%20torch%20and%20Python.
 override-dependencies = [
-    "torchcodec>=0.6.0; (sys_platform == 'linux' and platform_machine == 'x86_64') or sys_platform == 'darwin' or sys_platform == 'win32'",
+    "torchcodec~=0.7.0; (sys_platform == 'linux' and platform_machine == 'x86_64') or sys_platform == 'darwin' or sys_platform == 'win32'",
 ]
 
 [tool.uv.sources]
 torch = [
-  { index = "pytorch-cpu", marker = "sys_platform == 'darwin'" },
-  { index = "pytorch-cpu", marker = "platform_machine != 'x86_64' and sys_platform != 'darwin'" },
-  { index = "pytorch", marker = "platform_machine == 'x86_64' and sys_platform != 'darwin'" },
+  { index = "pytorch-cpu", marker = "sys_platform == 'linux'" },
 ]
 torchaudio = [
-  { index = "pytorch-cpu", marker = "sys_platform == 'darwin'" },
-  { index = "pytorch-cpu", marker = "platform_machine != 'x86_64' and sys_platform != 'darwin'" },
-  { index = "pytorch", marker = "platform_machine == 'x86_64' and sys_platform != 'darwin'" },
+  { index = "pytorch-cpu", marker = "sys_platform == 'linux'" },
 ]
 triton = [
-  { index = "pytorch", marker = "sys_platform == 'linux'" },
+  { index = "pytorch-cpu", marker = "sys_platform == 'linux'" },
 ]
-
-[[tool.uv.index]]
-name = "pytorch"
-url = "https://download.pytorch.org/whl/cu128"
-explicit = true
 
 [[tool.uv.index]]
 name = "pytorch-cpu"
